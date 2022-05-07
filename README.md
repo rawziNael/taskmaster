@@ -1,5 +1,5 @@
 # taskmaster  
-This Android can be used to handle tasks.  
+This android application can be used to handle tasks.  
 
 # ScreenShots
 
