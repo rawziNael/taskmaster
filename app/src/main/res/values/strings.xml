@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TaskMaster</string>
+    <string name="new_task_created">New Task Created!</string>
+    <string name="task_body">Task Body</string>
+    <string name="add_task">Add Task</string>
+    <string name="task_name">Task Name</string>
+    <string name="create_new_task">Create New Task</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="tasks_image_placeholder">Tasks Image Placeholder</string>
+    <string name="all_tasks">All Tasks</string>
+</resources>
