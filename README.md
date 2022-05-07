@@ -1,4 +1,4 @@
-# taskmaster  
+# Taskmaster  
 This android application can be used to handle tasks.  
 
 # ScreenShots
