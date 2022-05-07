@@ -1,4 +1,14 @@
 # taskmaster  
-You can navigate through three page home , add task and all task page  
+This Android can be used to handle tasks.  
 
-![image description](ScreenShots/AllTaskView.png)
+# ScreenShots
+
+
+![image description](ScreenShots/mainView.png)  
+
+![image description](ScreenShots/addTaskView.png)  
+
+![image description](ScreenShots/AllTaskView.png)  
+
+
+
