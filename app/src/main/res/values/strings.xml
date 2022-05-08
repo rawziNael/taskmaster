@@ -1,11 +1,21 @@
 <resources>
     <string name="app_name">TaskMaster</string>
     <string name="new_task_created">New Task Created!</string>
-    <string name="task_body">Task Body</string>
+    <string name="task_body">Description</string>
     <string name="add_task">Add Task</string>
     <string name="task_name">Task Name</string>
-    <string name="create_new_task">Create New Task</string>
+    <string name="create_new_task">Create</string>
     <string name="my_tasks">My Tasks</string>
     <string name="tasks_image_placeholder">Tasks Image Placeholder</string>
     <string name="all_tasks">All Tasks</string>
+
+    <string name="task_details">Task Details</string>
+    <string name="lorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="txt_task_details">Shopping</string>
+    <string name="make_task_details1">Walking</string>
+    <string name="make_task_details2">Homework</string>
+
+    <string name="settings">Settings</string>
+    <string name="update_username">Update Username</string>
+    <string name="action_settings">Settings</string>
 </resources>
