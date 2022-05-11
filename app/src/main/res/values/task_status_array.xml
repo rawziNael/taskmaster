@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="task_status_array" >
+        <item name="test name">new</item>
+        <item>assigned</item>
+        <item>in progress</item>
+        <item>complete</item>
+    </string-array>
+</resources>
