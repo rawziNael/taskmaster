@@ -63,58 +63,58 @@ public class MainActivity extends AppCompatActivity {
         taskDetailsBtn3.setOnClickListener(doHomework);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        database = Room.databaseBuilder(
-                this,
-                AppDatabase.class,
-                TASK_LIST
-        ).allowMainThreadQueries().build();
-
-        taskDao = database.taskDao();
-
-        //*******************************lab28************************************************
-
-
-        RecyclerView recyclerView = findViewById(R.id.List_tasks);
-//        dataList = new ArrayList<>();
-//        dataList.add(new Task("Task 1","Take your break","assigned"));
-//        dataList.add(new Task("Task 2","Do lab work for today","complete"));
-//        dataList.add(new Task("Task 3","Go out with your friends","in progress"));
-
-        dataList = taskDao.getAll();
-
-        adapter = new RecyclerViewAdapter(dataList, new RecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int position) {
-                Intent goToDetailsIntent = new Intent(getApplicationContext(), RecyclerViewActivity.class);
-                goToDetailsIntent.putExtra(TASK_TITLE, dataList.get(position).getTitle());
-                goToDetailsIntent.putExtra(TASK_BODY, dataList.get(position).getBody());
-                goToDetailsIntent.putExtra(TASK_STATUS, dataList.get(position).getStatus());
-                startActivity(goToDetailsIntent);
-            }
-        });
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
-                this,
-                LinearLayoutManager.VERTICAL,
-                false);
-
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
-    }
-
 //    @Override
 //    protected void onResume() {
 //        super.onResume();
 //
-//        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
-//        String username = preference.getString("username", "user") + "'s Tasks";
-//        TextView userLabel = findViewById(R.id.userTasksLabel);
-//        userLabel.setText(username);
+//        database = Room.databaseBuilder(
+//                this,
+//                AppDatabase.class,
+//                TASK_LIST
+//        ).allowMainThreadQueries().build();
+//
+//        taskDao = database.taskDao();
+//
+//        //*******************************lab28************************************************
+//
+//
+//        RecyclerView recyclerView = findViewById(R.id.List_tasks);
+////        dataList = new ArrayList<>();
+////        dataList.add(new Task("Task 1","Take your break","assigned"));
+////        dataList.add(new Task("Task 2","Do lab work for today","complete"));
+////        dataList.add(new Task("Task 3","Go out with your friends","in progress"));
+//
+//        dataList = taskDao.getAll();
+//
+//        adapter = new RecyclerViewAdapter(dataList, new RecyclerViewAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(int position) {
+//                Intent goToDetailsIntent = new Intent(getApplicationContext(), RecyclerViewActivity.class);
+//                goToDetailsIntent.putExtra(TASK_TITLE, dataList.get(position).getTitle());
+//                goToDetailsIntent.putExtra(TASK_BODY, dataList.get(position).getBody());
+//                goToDetailsIntent.putExtra(TASK_STATUS, dataList.get(position).getStatus());
+//                startActivity(goToDetailsIntent);
+//            }
+//        });
+//
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+//                this,
+//                LinearLayoutManager.VERTICAL,
+//                false);
+//
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView.setAdapter(adapter);
 //    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
+        String username = preference.getString("username", "user") + "'s Tasks";
+        TextView userLabel = findViewById(R.id.userTasksLabel);
+        userLabel.setText(username);
+    }
 //
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
