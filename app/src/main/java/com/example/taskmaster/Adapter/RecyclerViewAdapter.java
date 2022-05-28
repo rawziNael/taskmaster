@@ -8,8 +8,8 @@ import com.example.taskmaster.R;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.taskmaster.Model.Task;
 import java.util.List;
+import com.amplifyframework.datastore.generated.model.Task;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
