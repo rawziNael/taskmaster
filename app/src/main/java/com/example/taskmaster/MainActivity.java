@@ -4,25 +4,28 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.example.taskmaster.Adapter.RecyclerViewAdapter;
-import com.example.taskmaster.Model.AppDatabase;
-import com.example.taskmaster.Model.Task;
-import com.example.taskmaster.Model.TaskDao;
-
 import java.util.ArrayList;
 import java.util.List;
+import com.amplifyframework.datastore.generated.model.Task;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String TASK_BODY = "taskBody";
     public static final String TASK_STATUS = "taskStatus";
     public static final String TASK_LIST = "TaskList";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-    //private List<Task> dataList;
     private RecyclerViewAdapter adapter;
-    private AppDatabase database;
-    private TaskDao taskDao;
+    private Handler handler;
 
-    List<Task> dataList = new ArrayList<Task>();
+
+    List<Task> dataList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,71 +54,56 @@ public class MainActivity extends AppCompatActivity {
         Button allTasks = findViewById(R.id.allTasksButton);
         allTasks.setOnClickListener(this.allTasks);
 
-        //lab27
+        try {
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.configure(getApplicationContext());
 
-        Button taskDetailsBtn1 = findViewById(R.id.taskDetailsButton);
-        taskDetailsBtn1.setOnClickListener(doShopping);
+            Log.i("Tutorial", "Initialized Amplify");
+        } catch (AmplifyException e) {
+            Log.e("Tutorial", "Could not initialize Amplify", e);
+        }
 
-        Button taskDetailsBtn2 = findViewById(R.id.makeTaskDetailsButton1);
-        taskDetailsBtn2.setOnClickListener(doWalking);
+        handler = new Handler(Looper.getMainLooper(),
+                new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message message) {
+                        listItemDeleted();
+                        return false;
+                    }
+                });
 
-        Button taskDetailsBtn3 = findViewById(R.id.makeTaskDetailsButton2);
-        taskDetailsBtn3.setOnClickListener(doHomework);
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        database = Room.databaseBuilder(
-//                this,
-//                AppDatabase.class,
-//                TASK_LIST
-//        ).allowMainThreadQueries().build();
-//
-//        taskDao = database.taskDao();
-//
-//        //*******************************lab28************************************************
-//
-//
-//        RecyclerView recyclerView = findViewById(R.id.List_tasks);
-////        dataList = new ArrayList<>();
-////        dataList.add(new Task("Task 1","Take your break","assigned"));
-////        dataList.add(new Task("Task 2","Do lab work for today","complete"));
-////        dataList.add(new Task("Task 3","Go out with your friends","in progress"));
-//
-//        dataList = taskDao.getAll();
-//
-//        adapter = new RecyclerViewAdapter(dataList, new RecyclerViewAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClicked(int position) {
-//                Intent goToDetailsIntent = new Intent(getApplicationContext(), RecyclerViewActivity.class);
-//                goToDetailsIntent.putExtra(TASK_TITLE, dataList.get(position).getTitle());
-//                goToDetailsIntent.putExtra(TASK_BODY, dataList.get(position).getBody());
-//                goToDetailsIntent.putExtra(TASK_STATUS, dataList.get(position).getStatus());
-//                startActivity(goToDetailsIntent);
-//            }
-//        });
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
-//                this,
-//                LinearLayoutManager.VERTICAL,
-//                false);
-//
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        recyclerView.setAdapter(adapter);
-//    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = preference.getString("username", "user") + "'s Tasks";
-        TextView userLabel = findViewById(R.id.userTasksLabel);
-        userLabel.setText(username);
+        RecyclerView recyclerView = findViewById(R.id.List_tasks);
+
+        dataList = new ArrayList<>();
+        getTaskDataFromAPI();
+
+        adapter = new RecyclerViewAdapter(dataList, new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Intent goToDetailsIntent = new Intent(getApplicationContext(), RecyclerViewActivity.class);
+                goToDetailsIntent.putExtra(TASK_TITLE, dataList.get(position).getTitle());
+                goToDetailsIntent.putExtra(TASK_BODY, dataList.get(position).getBody());
+                goToDetailsIntent.putExtra(TASK_STATUS, dataList.get(position).getStatus());
+                startActivity(goToDetailsIntent);
+            }
+        });
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,
+                false);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
     }
-//
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main , menu);
@@ -147,38 +135,33 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private final View.OnClickListener doShopping = new View.OnClickListener() {
-        public void onClick(View v) {
-            Button taskDetailsButton = findViewById(R.id.taskDetailsButton);
-            String buttonText = taskDetailsButton.getText().toString();
-            Intent intent = new Intent(getBaseContext(), TaskDetailActivity.class);
-            intent.putExtra(TASK_NAME, buttonText);
-            startActivity(intent);
-        }
-    };
-
-    private final View.OnClickListener doWalking = new View.OnClickListener() {
-        public void onClick(View v) {
-            Button makeTaskDetailsButton1 = findViewById(R.id.makeTaskDetailsButton1);
-            String buttonText = makeTaskDetailsButton1.getText().toString();
-            Intent intent = new Intent(getBaseContext(), TaskDetailActivity.class);
-            intent.putExtra(TASK_NAME, buttonText);
-            startActivity(intent);
-        }
-    };
-
-    private final View.OnClickListener doHomework = new View.OnClickListener() {
-        public void onClick(View v) {
-            Button makeTaskDetailsButton2 = findViewById(R.id.makeTaskDetailsButton2);
-            String buttonText = makeTaskDetailsButton2.getText().toString();
-            Intent intent = new Intent(getBaseContext(), TaskDetailActivity.class);
-            intent.putExtra(TASK_NAME, buttonText);
-            startActivity(intent);
-        }
-    };
-
     private void goToSettings(){
             Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
             startActivity(intent);
+    }
+
+    public  void getTaskDataFromAPI() {
+        Amplify.API.query(ModelQuery.list(Task.class),
+                response -> {
+                    for (Task task : response.getData()) {
+                        dataList.add(task);
+                        Log.i(TAG, "getFrom api: the Task from api are => " + task.getTitle());
+                    }
+                    handler.sendEmptyMessage(1);
+                },
+                error -> Log.e(TAG, "getFrom api: Failed to get Task from api => " + error.toString())
+        );
+    }
+
+    public static void saveTaskToAPI(Task item) {
+        Amplify.API.mutate(ModelMutation.create(item),
+                success -> Log.i(TAG, "Saved item to api : " + success.getData().getTitle()),
+                error -> Log.e(TAG, "Could not save item to API/dynamodb", error));
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void listItemDeleted() {
+        adapter.notifyDataSetChanged();
     }
 }
