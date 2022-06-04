@@ -3,6 +3,8 @@ type Task {
   title: String!
   body: String
   status: String
+  taskId: ID!
+  team: Team
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
@@ -13,6 +15,17 @@ type Task {
 type Note {
   id: ID!
   content: String!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Team {
+  id: ID!
+  name: String!
+  teamTasks(filter: ModelTaskFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelTaskConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
@@ -109,6 +122,7 @@ input ModelTaskFilterInput {
   title: ModelStringInput
   body: ModelStringInput
   status: ModelStringInput
+  taskId: ModelIDInput
   and: [ModelTaskFilterInput]
   or: [ModelTaskFilterInput]
   not: ModelTaskFilterInput
@@ -134,6 +148,9 @@ type Query {
   syncNotes(filter: ModelNoteFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelNoteConnection
   getNote(id: ID!): Note
   listNotes(filter: ModelNoteFilterInput, limit: Int, nextToken: String): ModelNoteConnection
+  syncTeams(filter: ModelTeamFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelTeamConnection
+  getTeam(id: ID!): Team
+  listTeams(filter: ModelTeamFilterInput, limit: Int, nextToken: String): ModelTeamConnection
 }
 
 input CreateTaskInput {
@@ -141,6 +158,7 @@ input CreateTaskInput {
   title: String!
   body: String
   status: String
+  taskId: ID!
   _version: Int
 }
 
@@ -149,6 +167,7 @@ input UpdateTaskInput {
   title: String
   body: String
   status: String
+  taskId: ID
   _version: Int
 }
 
@@ -164,12 +183,16 @@ type Mutation {
   createNote(input: CreateNoteInput!, condition: ModelNoteConditionInput): Note
   updateNote(input: UpdateNoteInput!, condition: ModelNoteConditionInput): Note
   deleteNote(input: DeleteNoteInput!, condition: ModelNoteConditionInput): Note
+  createTeam(input: CreateTeamInput!, condition: ModelTeamConditionInput): Team
+  updateTeam(input: UpdateTeamInput!, condition: ModelTeamConditionInput): Team
+  deleteTeam(input: DeleteTeamInput!, condition: ModelTeamConditionInput): Team
 }
 
 input ModelTaskConditionInput {
   title: ModelStringInput
   body: ModelStringInput
   status: ModelStringInput
+  taskId: ModelIDInput
   and: [ModelTaskConditionInput]
   or: [ModelTaskConditionInput]
   not: ModelTaskConditionInput
@@ -182,6 +205,9 @@ type Subscription {
   onCreateNote: Note @aws_subscribe(mutations: ["createNote"])
   onUpdateNote: Note @aws_subscribe(mutations: ["updateNote"])
   onDeleteNote: Note @aws_subscribe(mutations: ["deleteNote"])
+  onCreateTeam: Team @aws_subscribe(mutations: ["createTeam"])
+  onUpdateTeam: Team @aws_subscribe(mutations: ["updateTeam"])
+  onDeleteTeam: Team @aws_subscribe(mutations: ["deleteTeam"])
 }
 
 type ModelNoteConnection {
@@ -220,4 +246,42 @@ input ModelNoteConditionInput {
   and: [ModelNoteConditionInput]
   or: [ModelNoteConditionInput]
   not: ModelNoteConditionInput
+}
+
+type ModelTeamConnection {
+  items: [Team]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelTeamFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  and: [ModelTeamFilterInput]
+  or: [ModelTeamFilterInput]
+  not: ModelTeamFilterInput
+}
+
+input CreateTeamInput {
+  id: ID
+  name: String!
+  _version: Int
+}
+
+input UpdateTeamInput {
+  id: ID!
+  name: String
+  _version: Int
+}
+
+input DeleteTeamInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelTeamConditionInput {
+  name: ModelStringInput
+  and: [ModelTeamConditionInput]
+  or: [ModelTeamConditionInput]
+  not: ModelTeamConditionInput
 }
