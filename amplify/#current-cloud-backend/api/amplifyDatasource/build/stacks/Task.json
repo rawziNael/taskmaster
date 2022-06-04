@@ -129,6 +129,10 @@
                     {
                         "AttributeName": "id",
                         "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "taskId",
+                        "AttributeType": "S"
                     }
                 ],
                 "StreamSpecification": {
@@ -182,7 +186,37 @@
                 "TimeToLiveSpecification": {
                     "AttributeName": "_ttl",
                     "Enabled": true
-                }
+                },
+                "GlobalSecondaryIndexes": [
+                    {
+                        "IndexName": "taskItem",
+                        "KeySchema": [
+                            {
+                                "AttributeName": "taskId",
+                                "KeyType": "HASH"
+                            }
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        },
+                        "ProvisionedThroughput": {
+                            "Fn::If": [
+                                "ShouldUsePayPerRequestBilling",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                {
+                                    "ReadCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableReadIOPS"
+                                    },
+                                    "WriteCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableWriteIOPS"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
             },
             "DeletionPolicy": "Delete"
         },
