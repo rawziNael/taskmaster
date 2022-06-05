@@ -31,12 +31,54 @@
         "GraphQLAPIEndpointOutput": "https://vahdyvdm2bavtdnpnfwymcfvxm.appsync-api.us-west-2.amazonaws.com/graphql",
         "GraphQLAPIKeyOutput": "da2-2j2dgoclbfc5rc3muuv35aioyi"
       },
-      "lastPushTimeStamp": "2022-05-30T21:05:08.537Z",
+      "lastPushTimeStamp": "2022-06-04T21:14:50.130Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-taskmaster-dev-12431-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apiamplifyDatasource"
       },
       "lastPushDirHash": "MGd1j1w+jewSpXKphifttxy4q9M="
+    }
+  },
+  "auth": {
+    "taskmaster9eb3379d": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-taskmaster-dev-12431-deployment/amplify-cfn-templates/auth/taskmaster9eb3379d-cloudformation-template.json",
+        "logicalId": "authtaskmaster9eb3379d"
+      },
+      "lastPushTimeStamp": "2022-06-04T21:14:50.137Z",
+      "output": {
+        "CreatedSNSRole": "arn:aws:iam::052404671900:role/sns9eb3379d12431-dev",
+        "UserPoolId": "us-west-2_gTNhJ61Bl",
+        "AppClientIDWeb": "66fffmkcbuhk8imudhfcjlppgk",
+        "AppClientID": "39lo92blpchqsh9sn0hg3plpfc",
+        "IdentityPoolId": "us-west-2:c542c62b-2690-409e-ab54-62871e75b0c9",
+        "UserPoolArn": "arn:aws:cognito-idp:us-west-2:052404671900:userpool/us-west-2_gTNhJ61Bl",
+        "IdentityPoolName": "taskmaster9eb3379d_identitypool_9eb3379d__dev",
+        "UserPoolName": "taskmaster9eb3379d_userpool_9eb3379d"
+      },
+      "lastPushDirHash": "ngweT1GkJmelVCkMxeOhvk3MNJ4="
     }
   }
 }

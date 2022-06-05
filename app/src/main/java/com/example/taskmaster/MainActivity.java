@@ -23,6 +23,9 @@ import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.AuthUser;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthSession;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Team;
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private Team teamData = null;
     private String teamNameData = null;
+    private String currentUsername = null;
+    private String userId ;
 
     List<Task> dataList = new ArrayList<>();
 
@@ -58,32 +63,6 @@ public class MainActivity extends AppCompatActivity {
         Button allTasks = findViewById(R.id.allTasksButton);
         allTasks.setOnClickListener(this.allTasks);
 
-
-        try {
-            Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.configure(getApplicationContext());
-
-            Log.i(TAG, "Initialized Amplify");
-        } catch (AmplifyException e) {
-            Log.e(TAG, "Could not initialize Amplify", e);
-        }
-
-//        Team team1 = Team.builder()
-//                .name("Team 1")
-//                .build();
-//        saveTeamToAPI(team1);
-//
-//        Team team2 = Team.builder()
-//                .name("Team 2")
-//                .build();
-//        saveTeamToAPI(team2);
-//
-//        Team team3 = Team.builder()
-//                .name("Team 3")
-//                .build();
-//        saveTeamToAPI(team3);
-
         handler = new Handler(Looper.getMainLooper(),
                 new Handler.Callback() {
                     @Override
@@ -93,14 +72,28 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        if (Amplify.Auth.getCurrentUser()!= null){
+            Log.i(TAG, "Auth: " + Amplify.Auth.getCurrentUser().toString());
+        }else {
+            Log.i(TAG, "Auth:  no user " + Amplify.Auth.getCurrentUser());
+            Intent goToLogin= new Intent(this,LoginActivity.class);
+            startActivity(goToLogin);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (Amplify.Auth.getCurrentUser()!= null){
+            TextView userNameText = (findViewById(R.id.userTasksLabel));
+            userNameText.setText(Amplify.Auth.getCurrentUser().getUsername()+ "'s Tasks");
+        }else {
+            Intent goToLogin= new Intent(this,LoginActivity.class);
+            startActivity(goToLogin);
+        }
+
         RecyclerView recyclerView = findViewById(R.id.List_tasks);
-
-
         dataList = new ArrayList<>();
 
         showTeamTasks();
@@ -126,13 +119,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void showTeamTasks(){
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = preference.getString("username", "user") + "'s Tasks";
+        //String username = preference.getString("username", "user") + "'s Tasks";
         String teamName = "Your Team Name is: " + preference.getString("teamName", "Choose your team");
 
         TextView userLabel = findViewById(R.id.userTasksLabel);
         TextView teamNameLabel = findViewById(R.id.teamTasksLabel);
         teamNameData = preference.getString("teamName", teamName);
-        userLabel.setText(username);
+        //userLabel.setText(username);
         teamNameLabel.setText(teamName);
         if (teamNameData!= null){
             getTeamDetailFromAPIByName();
@@ -152,6 +145,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.action_settings:
                 goToSettings();
+                return true;
+
+            case R.id.logout:
+                signOut();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -236,6 +233,17 @@ public class MainActivity extends AppCompatActivity {
                     handler.sendEmptyMessage(1);
                 },
                 error -> Log.e(TAG, "getFrom api: Failed to get Task from api => " + error)
+        );
+    }
+
+    public void signOut(){
+        Amplify.Auth.signOut(
+                () ->{
+                    Log.i(TAG, "Signed out successfully");
+                    Intent goToLogin = new Intent(getBaseContext(), LoginActivity.class);
+                    startActivity(goToLogin);
+                } ,
+                error -> Log.e(TAG, error.toString())
         );
     }
 
