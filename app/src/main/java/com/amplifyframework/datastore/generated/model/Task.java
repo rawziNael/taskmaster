@@ -25,11 +25,13 @@ public final class Task implements Model {
   public static final QueryField TITLE = field("Task", "title");
   public static final QueryField BODY = field("Task", "body");
   public static final QueryField STATUS = field("Task", "status");
+  public static final QueryField IMAGE = field("Task", "image");
   public static final QueryField TEAM = field("Task", "taskId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="String") String status;
+  private final @ModelField(targetType="String") String image;
   private final @ModelField(targetType="Team") @BelongsTo(targetName = "taskId", type = Team.class) Team team;
   public String getId() {
       return id;
@@ -47,15 +49,20 @@ public final class Task implements Model {
       return status;
   }
   
+  public String getImage() {
+      return image;
+  }
+  
   public Team getTeam() {
       return team;
   }
   
-  private Task(String id, String title, String body, String status, Team team) {
+  private Task(String id, String title, String body, String status, String image, Team team) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.status = status;
+    this.image = image;
     this.team = team;
   }
   
@@ -71,6 +78,7 @@ public final class Task implements Model {
               ObjectsCompat.equals(getTitle(), task.getTitle()) &&
               ObjectsCompat.equals(getBody(), task.getBody()) &&
               ObjectsCompat.equals(getStatus(), task.getStatus()) &&
+              ObjectsCompat.equals(getImage(), task.getImage()) &&
               ObjectsCompat.equals(getTeam(), task.getTeam());
       }
   }
@@ -82,6 +90,7 @@ public final class Task implements Model {
       .append(getTitle())
       .append(getBody())
       .append(getStatus())
+      .append(getImage())
       .append(getTeam())
       .toString()
       .hashCode();
@@ -95,6 +104,7 @@ public final class Task implements Model {
       .append("title=" + String.valueOf(getTitle()) + ", ")
       .append("body=" + String.valueOf(getBody()) + ", ")
       .append("status=" + String.valueOf(getStatus()) + ", ")
+      .append("image=" + String.valueOf(getImage()) + ", ")
       .append("team=" + String.valueOf(getTeam()))
       .append("}")
       .toString();
@@ -118,6 +128,7 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -127,6 +138,7 @@ public final class Task implements Model {
       title,
       body,
       status,
+      image,
       team);
   }
   public interface TitleStep {
@@ -139,6 +151,7 @@ public final class Task implements Model {
     BuildStep id(String id);
     BuildStep body(String body);
     BuildStep status(String status);
+    BuildStep image(String image);
     BuildStep team(Team team);
   }
   
@@ -148,6 +161,7 @@ public final class Task implements Model {
     private String title;
     private String body;
     private String status;
+    private String image;
     private Team team;
     @Override
      public Task build() {
@@ -158,6 +172,7 @@ public final class Task implements Model {
           title,
           body,
           status,
+          image,
           team);
     }
     
@@ -181,6 +196,12 @@ public final class Task implements Model {
     }
     
     @Override
+     public BuildStep image(String image) {
+        this.image = image;
+        return this;
+    }
+    
+    @Override
      public BuildStep team(Team team) {
         this.team = team;
         return this;
@@ -198,11 +219,12 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, String status, Team team) {
+    private CopyOfBuilder(String id, String title, String body, String status, String image, Team team) {
       super.id(id);
       super.title(title)
         .body(body)
         .status(status)
+        .image(image)
         .team(team);
     }
     
@@ -219,6 +241,11 @@ public final class Task implements Model {
     @Override
      public CopyOfBuilder status(String status) {
       return (CopyOfBuilder) super.status(status);
+    }
+    
+    @Override
+     public CopyOfBuilder image(String image) {
+      return (CopyOfBuilder) super.image(image);
     }
     
     @Override

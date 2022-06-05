@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TASK_BODY = "taskBody";
     public static final String TASK_STATUS = "taskStatus";
     public static final String TASK_LIST = "TaskList";
+    public static final String TASK_ID = "taskID";
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerViewAdapter adapter;
@@ -100,10 +101,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new RecyclerViewAdapter(dataList, new RecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
-                Intent goToDetailsIntent = new Intent(getApplicationContext(), RecyclerViewActivity.class);
-                goToDetailsIntent.putExtra(TASK_TITLE, dataList.get(position).getTitle());
-                goToDetailsIntent.putExtra(TASK_BODY, dataList.get(position).getBody());
-                goToDetailsIntent.putExtra(TASK_STATUS, dataList.get(position).getStatus());
+                Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetailActivity.class);
+                goToDetailsIntent.putExtra(TASK_ID ,  dataList.get(position).getId().toString());
                 startActivity(goToDetailsIntent);
             }
         });

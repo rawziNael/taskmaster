@@ -5,6 +5,7 @@ type Task @model
   body: String
   status: String
   taskId:ID!
+  image: String
   team: Team @connection(fields: ["taskId"])
 }
 type Note @model {
