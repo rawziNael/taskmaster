@@ -7,4 +7,4 @@ In addition the user can logout from application using logout button.
 ![alt text](login_page.png)  
 ![alt text](verfication_page.png)  
 ![alt text](logout_settings.png)  
-![alt text](Inkedmain_username_LI.jpg)  
+
