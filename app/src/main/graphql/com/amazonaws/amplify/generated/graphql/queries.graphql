@@ -17,6 +17,7 @@ query SyncTasks(
       body
       status
       taskId
+      image
       team {
         id
         name
@@ -43,6 +44,7 @@ query GetTask($id: ID!) {
     body
     status
     taskId
+    image
     team {
       id
       name
@@ -75,6 +77,7 @@ query ListTasks(
       body
       status
       taskId
+      image
       team {
         id
         name
@@ -189,6 +192,7 @@ query GetTeam($id: ID!) {
         body
         status
         taskId
+        image
         _version
         _deleted
         _lastChangedAt

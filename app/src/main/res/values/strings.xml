@@ -5,6 +5,7 @@
     <string name="add_task">Add Task</string>
     <string name="task_name">Task Name</string>
     <string name="create_new_task">Create</string>
+    <string name="upload_image">Upload</string>
     <string name="my_tasks">My Tasks</string>
     <string name="tasks_image_placeholder">Tasks Image Placeholder</string>
     <string name="all_tasks">All Tasks</string>
