@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
@@ -48,6 +49,15 @@ public class AddTask extends AppCompatActivity {
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (type.startsWith("image/")) {
+            handleSendImage(intent); // Handle single image being sent
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
@@ -217,4 +227,40 @@ public class AddTask extends AppCompatActivity {
 //                error -> Log.e("MyAmplifyApp",  "Download Failure", error)
 //        );
 //    }
+
+    private void handleSendImage(Intent intent){
+        Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (imageUri != null) {
+            imageS3upload(imageUri);
+        }
+    }
+
+
+    private void imageS3upload(Uri currentUri){
+        Bitmap bitmap = null;
+        try {
+            bitmap = getBitmapFromUri(currentUri);
+            File file = new File(getApplicationContext().getFilesDir(), "image.jpg");
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.close();
+
+            // upload to s3
+            // uploads the file
+            Amplify.Storage.uploadFile(
+                    "image.jpg",
+                    file,
+                    result -> {
+                        Log.i(TAG, "Successfully uploaded: " + result.getKey()) ;
+                        imageUrl = result.getKey();
+                        Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
+                    },
+                    storageFailure -> Log.e(TAG, "Upload failed", storageFailure)
+            );
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
