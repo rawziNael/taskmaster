@@ -56,3 +56,10 @@ On the Task detail activity, the user can see an image associated with the task,
 
 ![alt text](ScreenShots/form_add_task.png)  
 ![alt text](ScreenShots/taskdetailsInfo.png)  
+
+# Lab: 38 - Notifications 
+
+In this lab I added an intent filter to my application that a user can hit the “share” button on an image in another application, then choose TaskMaster as the app to share that image with, and be taken directly to the Add a Task activity with that image pre-selected. 
+
+![InkeduploadFromMobile_LI](https://user-images.githubusercontent.com/97670198/172723153-ffe7c134-5eb4-4bb1-990e-d40ad47ef627.jpg)
+
