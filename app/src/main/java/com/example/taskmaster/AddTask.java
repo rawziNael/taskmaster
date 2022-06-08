@@ -35,6 +35,7 @@ import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Random;
 
 public class AddTask extends AppCompatActivity {
 
@@ -45,20 +46,21 @@ public class AddTask extends AppCompatActivity {
     private Team teamData;
     private Handler handler;
     private String imageUrl = "" ;
+    private Button uploadButton;
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
+        super.onCreate(savedInstanceState);
 
-        if (type.startsWith("image/")) {
-            handleSendImage(intent); // Handle single image being sent
+        Intent intent = getIntent();
+        String intentType = intent.getType();
+
+        if (intentType != null && intentType.startsWith("image/")){
+            uploadSharedImage(intent);
         }
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
         Spinner spinner = findViewById(R.id.spinner_status);
@@ -89,8 +91,8 @@ public class AddTask extends AppCompatActivity {
                     }
                 });
 
-        Button upload = findViewById(R.id.upload_btn);
-        upload.setOnClickListener(v1 -> uploadImage());
+        uploadButton = findViewById(R.id.upload_btn);
+        uploadButton.setOnClickListener(v1 -> uploadImage());
 
         Button addTask = findViewById(R.id.newTaskSubmit);
         addTask.setOnClickListener(newTaskCreateListener);
@@ -109,18 +111,12 @@ public class AddTask extends AppCompatActivity {
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
             case R.id.team1:
-                if (checked)
-                    Log.i(TAG, "onClickRadioButton: team 1");
                 teamName = "Team 1";
                 break;
             case R.id.team2:
-                if (checked)
-                    Log.i(TAG, "onClickRadioButton: team 2");
                 teamName = "Team 2";
                 break;
             case R.id.team3:
-                if (checked)
-                    Log.i(TAG, "onClickRadioButton: team 3");
                 teamName = "Team 3";
                 break;
         }
@@ -157,6 +153,7 @@ public class AddTask extends AppCompatActivity {
                 .image(imageUrl)
                 .build();
         MainActivity.saveTaskToAPI(item);
+        finish();
     }
 
     public void uploadImage(){
@@ -169,98 +166,69 @@ public class AddTask extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
-            // Handle error
+
             Log.e(TAG, "onActivityResult: Error getting image from device");
             return;
         }
-
         switch(requestCode) {
             case REQUEST_CODE:
-                // Get photo picker response for single select.
-                Uri currentUri = data.getData();
-
-                // Do stuff with the photo/video URI.
-                Log.i(TAG, "onActivityResult: the uri is => " + currentUri);
-
-                try {
-                    Bitmap bitmap = getBitmapFromUri(currentUri);
-
-                    File file = new File(getApplicationContext().getFilesDir(), "image.jpg");
-                    OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-                    os.close();
-
-                    // upload to s3
-                    // uploads the file
-                    Amplify.Storage.uploadFile(
-                            "image.jpg",
-                            file,
-                            result -> {
-                                Log.i(TAG, "Successfully uploaded: " + result.getKey()) ;
-                                imageUrl = result.getKey();
-                            },
-                            storageFailure -> Log.e(TAG, "Upload failed", storageFailure)
-                    );
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Uri imagePath = data.getData();
+                Log.i(TAG, "onActivityResult: the uri is => " + imagePath);
+                uploadImageAPI(imagePath);
                 return;
         }
     }
 
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-
         ParcelFileDescriptor parcelFileDescriptor =
                 getContentResolver().openFileDescriptor(uri, "r");
         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
-
         return image;
     }
 
-//    private void pictureDownload(){
-//        Amplify.Storage.downloadFile(
-//                "ExampleKey",
-//                new File(getApplicationContext().getFilesDir() + "/download.txt"),
-//                result -> Log.i("MyAmplifyApp", "Successfully downloaded: " + result.getFile().getName()),
-//                error -> Log.e("MyAmplifyApp",  "Download Failure", error)
-//        );
-//    }
-
-    private void handleSendImage(Intent intent){
-        Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (imageUri != null) {
-            imageS3upload(imageUri);
+    private void uploadSharedImage(Intent intent){
+        Uri imagePath = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (imagePath != null) {
+            uploadImageAPI(imagePath);
         }
     }
 
-
-    private void imageS3upload(Uri currentUri){
-        Bitmap bitmap = null;
+    private void uploadImageAPI(Uri imageUri){
+        String imageName = getRandomString(5) + ".jpg";
+        Bitmap bitmap;
         try {
-            bitmap = getBitmapFromUri(currentUri);
-            File file = new File(getApplicationContext().getFilesDir(), "image.jpg");
-            OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-            os.close();
-
-            // upload to s3
-            // uploads the file
+            bitmap = getBitmapFromUri(imageUri);
+            File file = new File(getApplicationContext().getFilesDir(), imageName);
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.close();
             Amplify.Storage.uploadFile(
-                    "image.jpg",
+                    imageName,
                     file,
                     result -> {
                         Log.i(TAG, "Successfully uploaded: " + result.getKey()) ;
                         imageUrl = result.getKey();
                         Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
-                    },
+                        uploadButton.setEnabled(false);
+                        },
                     storageFailure -> Log.e(TAG, "Upload failed", storageFailure)
             );
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
+    //Generate random string
+    private static final String ALLOWED_CHARACTERS ="0123456789qwertyuiopasdfghjklzxcvbnm";
+
+    private static String getRandomString(final int sizeOfRandomString) {
+        final Random random=new Random();
+        final StringBuilder sb=new StringBuilder(sizeOfRandomString);
+        for(int i=0;i<sizeOfRandomString;++i)
+            sb.append(ALLOWED_CHARACTERS.charAt(random.nextInt(ALLOWED_CHARACTERS.length())));
+        return sb.toString();
+    }
+
 }
