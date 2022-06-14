@@ -68,5 +68,5 @@ In this lab I added an intent filter to my application that a user can hit the â
 The application will add the userâ€™s location to a task automatically when that task is created and on the Task Detail activity,
 the location of a Task should be displayed if it exists.
 
-![alt text](ScreenShots/permissions.png)
+![alt text](ScreenShots/permissions.png)  
 ![alt text](ScreenShots/locations.png)
