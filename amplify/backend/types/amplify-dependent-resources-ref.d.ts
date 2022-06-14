@@ -1,12 +1,13 @@
 export type AmplifyDependentResourcesAttributes = {
     "api": {
-        "amplifyDatasource": {
+        "newtaskmaster": {
+            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
     },
     "auth": {
-        "taskmaster9eb3379d": {
+        "newtaskmaster7eaf963b": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
@@ -18,7 +19,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "storage": {
-        "s364c5d51d": {
+        "s37d7bd187": {
             "BucketName": "string",
             "Region": "string"
         }

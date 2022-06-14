@@ -5,26 +5,12 @@ subscription OnCreateTask {
     title
     body
     status
-    taskId
     image
-    team {
-      id
-      name
-      teamTasks {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    _version
-    _deleted
-    _lastChangedAt
+    locationLatitude
+    locationLongitude
     createdAt
     updatedAt
+    teamTasksId
   }
 }
 subscription OnUpdateTask {
@@ -33,26 +19,12 @@ subscription OnUpdateTask {
     title
     body
     status
-    taskId
     image
-    team {
-      id
-      name
-      teamTasks {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    _version
-    _deleted
-    _lastChangedAt
+    locationLatitude
+    locationLongitude
     createdAt
     updatedAt
+    teamTasksId
   }
 }
 subscription OnDeleteTask {
@@ -61,85 +33,33 @@ subscription OnDeleteTask {
     title
     body
     status
-    taskId
     image
-    team {
-      id
-      name
-      teamTasks {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    _version
-    _deleted
-    _lastChangedAt
+    locationLatitude
+    locationLongitude
     createdAt
     updatedAt
-  }
-}
-subscription OnCreateNote {
-  onCreateNote {
-    id
-    content
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-subscription OnUpdateNote {
-  onUpdateNote {
-    id
-    content
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-subscription OnDeleteNote {
-  onDeleteNote {
-    id
-    content
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
+    teamTasksId
   }
 }
 subscription OnCreateTeam {
   onCreateTeam {
     id
     name
-    teamTasks {
+    tasks {
       items {
         id
         title
         body
         status
-        taskId
         image
-        _version
-        _deleted
-        _lastChangedAt
+        locationLatitude
+        locationLongitude
         createdAt
         updatedAt
+        teamTasksId
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -148,26 +68,21 @@ subscription OnUpdateTeam {
   onUpdateTeam {
     id
     name
-    teamTasks {
+    tasks {
       items {
         id
         title
         body
         status
-        taskId
         image
-        _version
-        _deleted
-        _lastChangedAt
+        locationLatitude
+        locationLongitude
         createdAt
         updatedAt
+        teamTasksId
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -176,26 +91,21 @@ subscription OnDeleteTeam {
   onDeleteTeam {
     id
     name
-    teamTasks {
+    tasks {
       items {
         id
         title
         body
         status
-        taskId
         image
-        _version
-        _deleted
-        _lastChangedAt
+        locationLatitude
+        locationLongitude
         createdAt
         updatedAt
+        teamTasksId
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }

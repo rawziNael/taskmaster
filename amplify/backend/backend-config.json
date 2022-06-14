@@ -1,24 +1,24 @@
 {
   "api": {
-    "amplifyDatasource": {
+    "newtaskmaster": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
+      "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "description": "",
               "apiKeyExpirationDays": 7
             }
-          }
+          },
+          "additionalAuthenticationProviders": []
         }
       }
     }
   },
   "auth": {
-    "taskmaster9eb3379d": {
+    "newtaskmaster7eaf963b": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -44,7 +44,7 @@
     }
   },
   "storage": {
-    "s364c5d51d": {
+    "s37d7bd187": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": []

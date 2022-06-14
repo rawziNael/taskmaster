@@ -1,19 +1,33 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-taskmaster-dev-12431-authRole",
-      "UnauthRoleArn": "arn:aws:iam::052404671900:role/amplify-taskmaster-dev-12431-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::052404671900:role/amplify-taskmaster-dev-12431-authRole",
+      "AuthRoleName": "amplify-newtaskmaster-dev-151527-authRole",
+      "UnauthRoleArn": "arn:aws:iam::052404671900:role/amplify-newtaskmaster-dev-151527-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::052404671900:role/amplify-newtaskmaster-dev-151527-authRole",
       "Region": "us-west-2",
-      "DeploymentBucketName": "amplify-taskmaster-dev-12431-deployment",
-      "UnauthRoleName": "amplify-taskmaster-dev-12431-unauthRole",
-      "StackName": "amplify-taskmaster-dev-12431",
-      "StackId": "arn:aws:cloudformation:us-west-2:052404671900:stack/amplify-taskmaster-dev-12431/f537e2f0-da1d-11ec-950a-0a066e0f0c25",
-      "AmplifyAppId": "d5oh253zbopwq"
+      "DeploymentBucketName": "amplify-newtaskmaster-dev-151527-deployment",
+      "UnauthRoleName": "amplify-newtaskmaster-dev-151527-unauthRole",
+      "StackName": "amplify-newtaskmaster-dev-151527",
+      "StackId": "arn:aws:cloudformation:us-west-2:052404671900:stack/amplify-newtaskmaster-dev-151527/b046fc10-ebdb-11ec-a438-06e7b92e1ded",
+      "AmplifyAppId": "d27eusmwed2biy"
+    }
+  },
+  "today": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-newtaskmaster-today-151845-authRole",
+      "UnauthRoleArn": "arn:aws:iam::052404671900:role/amplify-newtaskmaster-today-151845-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::052404671900:role/amplify-newtaskmaster-today-151845-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-newtaskmaster-today-151845-deployment",
+      "UnauthRoleName": "amplify-newtaskmaster-today-151845-unauthRole",
+      "StackName": "amplify-newtaskmaster-today-151845",
+      "StackId": "arn:aws:cloudformation:us-west-2:052404671900:stack/amplify-newtaskmaster-today-151845/25eec420-ebdc-11ec-a319-0620a6b76915",
+      "AmplifyAppId": "d27eusmwed2biy"
     },
     "categories": {
       "auth": {
-        "taskmaster9eb3379d": {}
+        "newtaskmaster7eaf963b": {},
+        "true": {}
       }
     }
   }

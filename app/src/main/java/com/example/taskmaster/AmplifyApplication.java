@@ -1,9 +1,6 @@
 package com.example.taskmaster;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Application;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.amplifyframework.AmplifyException;

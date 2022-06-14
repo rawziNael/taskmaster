@@ -1,32 +1,29 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.HasMany;
-import com.amplifyframework.core.model.temporal.Temporal;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.Objects;
+import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 import androidx.core.util.ObjectsCompat;
 
 import com.amplifyframework.core.model.Model;
-import com.amplifyframework.core.model.annotations.Index;
+import com.amplifyframework.core.model.annotations.HasMany;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
 import com.amplifyframework.core.model.query.predicate.QueryField;
+import com.amplifyframework.core.model.temporal.Temporal;
 
-import static com.amplifyframework.core.model.query.predicate.QueryField.field;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
-/** This is an auto generated class representing the Team type in your schema. */
+/** This is an auto generated class representing the Blog type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Teams")
-@Index(name = "undefined", fields = {"id"})
-public final class Team implements Model {
-  public static final QueryField ID = field("Team", "id");
-  public static final QueryField NAME = field("Team", "name");
+@ModelConfig(pluralName = "Blogs")
+public final class Blog implements Model {
+  public static final QueryField ID = field("Blog", "id");
+  public static final QueryField NAME = field("Blog", "name");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String name;
-  private final @ModelField(targetType="Task") @HasMany(associatedWith = "teamTasksId", type = Task.class) List<Task> tasks = null;
+  private final @ModelField(targetType="Post") @HasMany(associatedWith = "blog", type = Post.class) List<Post> posts = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -37,8 +34,8 @@ public final class Team implements Model {
       return name;
   }
   
-  public List<Task> getTasks() {
-      return tasks;
+  public List<Post> getPosts() {
+      return posts;
   }
   
   public Temporal.DateTime getCreatedAt() {
@@ -49,7 +46,7 @@ public final class Team implements Model {
       return updatedAt;
   }
   
-  private Team(String id, String name) {
+  private Blog(String id, String name) {
     this.id = id;
     this.name = name;
   }
@@ -61,11 +58,11 @@ public final class Team implements Model {
       } else if(obj == null || getClass() != obj.getClass()) {
         return false;
       } else {
-      Team team = (Team) obj;
-      return ObjectsCompat.equals(getId(), team.getId()) &&
-              ObjectsCompat.equals(getName(), team.getName()) &&
-              ObjectsCompat.equals(getCreatedAt(), team.getCreatedAt()) &&
-              ObjectsCompat.equals(getUpdatedAt(), team.getUpdatedAt());
+      Blog blog = (Blog) obj;
+      return ObjectsCompat.equals(getId(), blog.getId()) &&
+              ObjectsCompat.equals(getName(), blog.getName()) &&
+              ObjectsCompat.equals(getCreatedAt(), blog.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), blog.getUpdatedAt());
       }
   }
   
@@ -83,7 +80,7 @@ public final class Team implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("Team {")
+      .append("Blog {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
@@ -104,8 +101,8 @@ public final class Team implements Model {
    * @param id the id of the existing item this instance will represent
    * @return an instance of this model with only ID populated
    */
-  public static Team justId(String id) {
-    return new Team(
+  public static Blog justId(String id) {
+    return new Blog(
       id,
       null
     );
@@ -121,7 +118,7 @@ public final class Team implements Model {
   
 
   public interface BuildStep {
-    Team build();
+    Blog build();
     BuildStep id(String id);
   }
   
@@ -130,10 +127,10 @@ public final class Team implements Model {
     private String id;
     private String name;
     @Override
-     public Team build() {
+     public Blog build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
-        return new Team(
+        return new Blog(
           id,
           name);
     }

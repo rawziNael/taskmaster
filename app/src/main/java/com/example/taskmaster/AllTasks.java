@@ -1,9 +1,8 @@
 package com.example.taskmaster;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AllTasks extends AppCompatActivity {
 

@@ -1,6 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,20 +19,25 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 /** This is an auto generated class representing the Task type in your schema. */
 @SuppressWarnings("all")
 @ModelConfig(pluralName = "Tasks")
-@Index(name = "taskItem", fields = {"taskId"})
 public final class Task implements Model {
   public static final QueryField ID = field("Task", "id");
   public static final QueryField TITLE = field("Task", "title");
   public static final QueryField BODY = field("Task", "body");
   public static final QueryField STATUS = field("Task", "status");
   public static final QueryField IMAGE = field("Task", "image");
-  public static final QueryField TEAM = field("Task", "taskId");
+  public static final QueryField LOCATION_LATITUDE = field("Task", "locationLatitude");
+  public static final QueryField LOCATION_LONGITUDE = field("Task", "locationLongitude");
+  public static final QueryField TEAM_TASKS_ID = field("Task", "teamTasksId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
-  private final @ModelField(targetType="String") String body;
-  private final @ModelField(targetType="String") String status;
+  private final @ModelField(targetType="String", isRequired = true) String body;
+  private final @ModelField(targetType="String", isRequired = true) String status;
   private final @ModelField(targetType="String") String image;
-  private final @ModelField(targetType="Team") @BelongsTo(targetName = "taskId", type = Team.class) Team team;
+  private final @ModelField(targetType="Float") Double locationLatitude;
+  private final @ModelField(targetType="Float") Double locationLongitude;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
+  private final @ModelField(targetType="ID") String teamTasksId;
   public String getId() {
       return id;
   }
@@ -53,17 +58,35 @@ public final class Task implements Model {
       return image;
   }
   
-  public Team getTeam() {
-      return team;
+  public Double getLocationLatitude() {
+      return locationLatitude;
   }
   
-  private Task(String id, String title, String body, String status, String image, Team team) {
+  public Double getLocationLongitude() {
+      return locationLongitude;
+  }
+  
+  public Temporal.DateTime getCreatedAt() {
+      return createdAt;
+  }
+  
+  public Temporal.DateTime getUpdatedAt() {
+      return updatedAt;
+  }
+  
+  public String getTeamTasksId() {
+      return teamTasksId;
+  }
+  
+  private Task(String id, String title, String body, String status, String image, Double locationLatitude, Double locationLongitude, String teamTasksId) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.status = status;
     this.image = image;
-    this.team = team;
+    this.locationLatitude = locationLatitude;
+    this.locationLongitude = locationLongitude;
+    this.teamTasksId = teamTasksId;
   }
   
   @Override
@@ -79,7 +102,11 @@ public final class Task implements Model {
               ObjectsCompat.equals(getBody(), task.getBody()) &&
               ObjectsCompat.equals(getStatus(), task.getStatus()) &&
               ObjectsCompat.equals(getImage(), task.getImage()) &&
-              ObjectsCompat.equals(getTeam(), task.getTeam());
+              ObjectsCompat.equals(getLocationLatitude(), task.getLocationLatitude()) &&
+              ObjectsCompat.equals(getLocationLongitude(), task.getLocationLongitude()) &&
+              ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt()) &&
+              ObjectsCompat.equals(getTeamTasksId(), task.getTeamTasksId());
       }
   }
   
@@ -91,7 +118,11 @@ public final class Task implements Model {
       .append(getBody())
       .append(getStatus())
       .append(getImage())
-      .append(getTeam())
+      .append(getLocationLatitude())
+      .append(getLocationLongitude())
+      .append(getCreatedAt())
+      .append(getUpdatedAt())
+      .append(getTeamTasksId())
       .toString()
       .hashCode();
   }
@@ -105,7 +136,11 @@ public final class Task implements Model {
       .append("body=" + String.valueOf(getBody()) + ", ")
       .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("image=" + String.valueOf(getImage()) + ", ")
-      .append("team=" + String.valueOf(getTeam()))
+      .append("locationLatitude=" + String.valueOf(getLocationLatitude()) + ", ")
+      .append("locationLongitude=" + String.valueOf(getLocationLongitude()) + ", ")
+      .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
+      .append("updatedAt=" + String.valueOf(getUpdatedAt()) + ", ")
+      .append("teamTasksId=" + String.valueOf(getTeamTasksId()))
       .append("}")
       .toString();
   }
@@ -129,6 +164,8 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
+      null,
       null
     );
   }
@@ -139,30 +176,44 @@ public final class Task implements Model {
       body,
       status,
       image,
-      team);
+      locationLatitude,
+      locationLongitude,
+      teamTasksId);
   }
   public interface TitleStep {
-    BuildStep title(String title);
+    BodyStep title(String title);
+  }
+  
+
+  public interface BodyStep {
+    StatusStep body(String body);
+  }
+  
+
+  public interface StatusStep {
+    BuildStep status(String status);
   }
   
 
   public interface BuildStep {
     Task build();
     BuildStep id(String id);
-    BuildStep body(String body);
-    BuildStep status(String status);
     BuildStep image(String image);
-    BuildStep team(Team team);
+    BuildStep locationLatitude(Double locationLatitude);
+    BuildStep locationLongitude(Double locationLongitude);
+    BuildStep teamTasksId(String teamTasksId);
   }
   
 
-  public static class Builder implements TitleStep, BuildStep {
+  public static class Builder implements TitleStep, BodyStep, StatusStep, BuildStep {
     private String id;
     private String title;
     private String body;
     private String status;
     private String image;
-    private Team team;
+    private Double locationLatitude;
+    private Double locationLongitude;
+    private String teamTasksId;
     @Override
      public Task build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -173,24 +224,28 @@ public final class Task implements Model {
           body,
           status,
           image,
-          team);
+          locationLatitude,
+          locationLongitude,
+          teamTasksId);
     }
     
     @Override
-     public BuildStep title(String title) {
+     public BodyStep title(String title) {
         Objects.requireNonNull(title);
         this.title = title;
         return this;
     }
     
     @Override
-     public BuildStep body(String body) {
+     public StatusStep body(String body) {
+        Objects.requireNonNull(body);
         this.body = body;
         return this;
     }
     
     @Override
      public BuildStep status(String status) {
+        Objects.requireNonNull(status);
         this.status = status;
         return this;
     }
@@ -202,8 +257,20 @@ public final class Task implements Model {
     }
     
     @Override
-     public BuildStep team(Team team) {
-        this.team = team;
+     public BuildStep locationLatitude(Double locationLatitude) {
+        this.locationLatitude = locationLatitude;
+        return this;
+    }
+    
+    @Override
+     public BuildStep locationLongitude(Double locationLongitude) {
+        this.locationLongitude = locationLongitude;
+        return this;
+    }
+    
+    @Override
+     public BuildStep teamTasksId(String teamTasksId) {
+        this.teamTasksId = teamTasksId;
         return this;
     }
     
@@ -219,13 +286,15 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, String status, String image, Team team) {
+    private CopyOfBuilder(String id, String title, String body, String status, String image, Double locationLatitude, Double locationLongitude, String teamTasksId) {
       super.id(id);
       super.title(title)
         .body(body)
         .status(status)
         .image(image)
-        .team(team);
+        .locationLatitude(locationLatitude)
+        .locationLongitude(locationLongitude)
+        .teamTasksId(teamTasksId);
     }
     
     @Override
@@ -249,8 +318,18 @@ public final class Task implements Model {
     }
     
     @Override
-     public CopyOfBuilder team(Team team) {
-      return (CopyOfBuilder) super.team(team);
+     public CopyOfBuilder locationLatitude(Double locationLatitude) {
+      return (CopyOfBuilder) super.locationLatitude(locationLatitude);
+    }
+    
+    @Override
+     public CopyOfBuilder locationLongitude(Double locationLongitude) {
+      return (CopyOfBuilder) super.locationLongitude(locationLongitude);
+    }
+    
+    @Override
+     public CopyOfBuilder teamTasksId(String teamTasksId) {
+      return (CopyOfBuilder) super.teamTasksId(teamTasksId);
     }
   }
   

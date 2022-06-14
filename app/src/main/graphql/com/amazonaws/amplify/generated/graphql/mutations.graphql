@@ -8,26 +8,12 @@ mutation CreateTask(
     title
     body
     status
-    taskId
     image
-    team {
-      id
-      name
-      teamTasks {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    _version
-    _deleted
-    _lastChangedAt
+    locationLatitude
+    locationLongitude
     createdAt
     updatedAt
+    teamTasksId
   }
 }
 mutation UpdateTask(
@@ -39,26 +25,12 @@ mutation UpdateTask(
     title
     body
     status
-    taskId
     image
-    team {
-      id
-      name
-      teamTasks {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    _version
-    _deleted
-    _lastChangedAt
+    locationLatitude
+    locationLongitude
     createdAt
     updatedAt
+    teamTasksId
   }
 }
 mutation DeleteTask(
@@ -70,68 +42,12 @@ mutation DeleteTask(
     title
     body
     status
-    taskId
     image
-    team {
-      id
-      name
-      teamTasks {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    _version
-    _deleted
-    _lastChangedAt
+    locationLatitude
+    locationLongitude
     createdAt
     updatedAt
-  }
-}
-mutation CreateNote(
-  $input: CreateNoteInput!
-  $condition: ModelNoteConditionInput
-) {
-  createNote(input: $input, condition: $condition) {
-    id
-    content
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-mutation UpdateNote(
-  $input: UpdateNoteInput!
-  $condition: ModelNoteConditionInput
-) {
-  updateNote(input: $input, condition: $condition) {
-    id
-    content
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-mutation DeleteNote(
-  $input: DeleteNoteInput!
-  $condition: ModelNoteConditionInput
-) {
-  deleteNote(input: $input, condition: $condition) {
-    id
-    content
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
+    teamTasksId
   }
 }
 mutation CreateTeam(
@@ -141,26 +57,21 @@ mutation CreateTeam(
   createTeam(input: $input, condition: $condition) {
     id
     name
-    teamTasks {
+    tasks {
       items {
         id
         title
         body
         status
-        taskId
         image
-        _version
-        _deleted
-        _lastChangedAt
+        locationLatitude
+        locationLongitude
         createdAt
         updatedAt
+        teamTasksId
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -172,26 +83,21 @@ mutation UpdateTeam(
   updateTeam(input: $input, condition: $condition) {
     id
     name
-    teamTasks {
+    tasks {
       items {
         id
         title
         body
         status
-        taskId
         image
-        _version
-        _deleted
-        _lastChangedAt
+        locationLatitude
+        locationLongitude
         createdAt
         updatedAt
+        teamTasksId
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -203,26 +109,21 @@ mutation DeleteTeam(
   deleteTeam(input: $input, condition: $condition) {
     id
     name
-    teamTasks {
+    tasks {
       items {
         id
         title
         body
         status
-        taskId
         image
-        _version
-        _deleted
-        _lastChangedAt
+        locationLatitude
+        locationLongitude
         createdAt
         updatedAt
+        teamTasksId
       }
       nextToken
-      startedAt
     }
-    _version
-    _deleted
-    _lastChangedAt
     createdAt
     updatedAt
   }
