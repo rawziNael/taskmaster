@@ -21,11 +21,11 @@ import java.io.File;
 public class TaskDetailActivity extends AppCompatActivity {
 
     private static final String TAG = TaskDetailActivity.class.getSimpleName();
-    private String title , body , status;
+    private Task taskDetails;
     private ImageView imageView;
-    private String imageName;
     private Handler handler;
     public static final String TASK_ID = "taskID";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +37,17 @@ public class TaskDetailActivity extends AppCompatActivity {
         TextView titleTV = findViewById(R.id.taskDetailTitle);
         TextView bodyTV = findViewById(R.id.taskBodyTitle);
         TextView statusTV = findViewById(R.id.task_Detail_State);
+        TextView locationTV = findViewById(R.id.task_location);
         imageView = findViewById(R.id.task_img);
         handler = new Handler(Looper.getMainLooper() , msg -> {
 
-            titleTV.setText("Title\n" + title);
-            bodyTV.setText("Body\n" + body);
-            statusTV.setText("Status\n" + status.toString());
-            if (imageName != null){
-                setImage(imageName);
+            titleTV.setText("Title\n" + taskDetails.getTitle());
+            bodyTV.setText("Body\n" + taskDetails.getBody());
+            statusTV.setText("Status\n" + taskDetails.getStatus());
+            locationTV.setText("Location\n" + taskDetails.getLocationLatitude() + ", " + taskDetails.getLocationLongitude());
+
+            if (taskDetails.getImage() != null){
+                setImage(taskDetails.getImage());
             }
             return true ;
         });
@@ -75,11 +78,7 @@ public class TaskDetailActivity extends AppCompatActivity {
                 response -> {
                     Log.i("MyAmplifyApp", (response.getData()).getTitle()) ;
 
-                    title = response.getData().getTitle();
-                    body = response.getData().getBody();
-                    status = response.getData().getStatus();
-                    imageName = response.getData().getImage();
-
+                    taskDetails = response.getData();
                     Bundle bundle = new Bundle();
                     Message message = new Message();
                     message.setData(bundle);

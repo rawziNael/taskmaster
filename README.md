@@ -63,3 +63,10 @@ In this lab I added an intent filter to my application that a user can hit the â
 
 ![InkeduploadFromMobile_LI](https://user-images.githubusercontent.com/97670198/172723153-ffe7c134-5eb4-4bb1-990e-d40ad47ef627.jpg)
 
+# Lab: 39 - Notifications
+
+The application will add the userâ€™s location to a task automatically when that task is created and on the Task Detail activity,
+the location of a Task should be displayed if it exists.
+
+![alt text](ScreenShots/permissions.png)
+![alt text](ScreenShots/locations.png)
