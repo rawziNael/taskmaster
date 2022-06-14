@@ -1,9 +1,5 @@
 package com.example.taskmaster;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,20 +15,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
-import com.amplifyframework.auth.AuthUser;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
-import com.amplifyframework.auth.cognito.AWSCognitoAuthSession;
 import com.amplifyframework.core.Amplify;
-import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.example.taskmaster.Adapter.RecyclerViewAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.amplifyframework.datastore.generated.model.Task;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,6 +80,23 @@ public class MainActivity extends AppCompatActivity {
             Intent goToLogin= new Intent(this,LoginActivity.class);
             startActivity(goToLogin);
         }
+
+//        Team team1 = Team.builder()
+//                .name("Team 1")
+//                .build();
+//        saveTeamToAPI(team1);
+//
+//        Team team2 = Team.builder()
+//                .name("Team 2")
+//                .build();
+//        saveTeamToAPI(team2);
+//
+//        Team team3 = Team.builder()
+//                .name("Team 3")
+//                .build();
+//        saveTeamToAPI(team3);
+
+
     }
 
     @Override
@@ -187,16 +204,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void saveTaskToAPI(Task item){
-        System.out.println(item);
+        //System.out.println(item);
         Amplify.API.mutate(ModelMutation.create(item),
                 success -> Log.i(TAG, "Saved item to api : " + success.getData().getTitle()),
                 error -> Log.e(TAG, "Could not save item to API/dynamodb", error));
     }
 
+
     public static void saveTeamToAPI(Team item){
-        //System.out.println(item);
+        System.out.println(item + "**************************rawzi*********************");
         Amplify.API.mutate(ModelMutation.create(item),
-                success -> Log.i(TAG, "Saved item to api : " + success.getData().getId()),
+                success -> Log.i(TAG, "Saved item to api : " + success),
                 error -> Log.e(TAG, "Could not save item to API/dynamodb", error));
     }
 
@@ -220,11 +238,11 @@ public class MainActivity extends AppCompatActivity {
 
     public  void  getTaskDataFromAPIByTeam(){
         Log.i(TAG, "getTaskDataFromAPIByTeam: get task by team");
-        Amplify.API.query(ModelQuery.list(Task.class, Task.TEAM.contains(teamData.getId())),
+        Amplify.API.query(ModelQuery.list(Task.class, Task.TEAM_TASKS_ID.contains(teamData.getId())),
                 response -> {
                     for (Task task : response.getData()) {
 
-                        Log.i(TAG, "task-team-id: " + task.getTeam().getId());
+                        Log.i(TAG, "task-team-id: " + task.getId());
                         Log.i(TAG, "team-id: "+ teamData.getId());
                         dataList.add(task);
                         Log.i(TAG, "getFrom api by team: the Task from api are => " + task);

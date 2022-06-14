@@ -4,12 +4,12 @@
     "api": {
         "plugins": {
             "awsAPIPlugin": {
-                "amplifyDatasource": {
+                "newtaskmaster": {
                     "endpointType": "GraphQL",
-                    "endpoint": "https://vahdyvdm2bavtdnpnfwymcfvxm.appsync-api.us-west-2.amazonaws.com/graphql",
+                    "endpoint": "https://cqxh5tswunf2davuishlojqk7y.appsync-api.us-west-2.amazonaws.com/graphql",
                     "region": "us-west-2",
                     "authorizationType": "API_KEY",
-                    "apiKey": "da2-2j2dgoclbfc5rc3muuv35aioyi"
+                    "apiKey": "da2-n55i3a3o5rfb7ggyy55zlms4ri"
                 }
             }
         }
@@ -24,25 +24,25 @@
                 },
                 "AppSync": {
                     "Default": {
-                        "ApiUrl": "https://vahdyvdm2bavtdnpnfwymcfvxm.appsync-api.us-west-2.amazonaws.com/graphql",
+                        "ApiUrl": "https://cqxh5tswunf2davuishlojqk7y.appsync-api.us-west-2.amazonaws.com/graphql",
                         "Region": "us-west-2",
                         "AuthMode": "API_KEY",
-                        "ApiKey": "da2-2j2dgoclbfc5rc3muuv35aioyi",
-                        "ClientDatabasePrefix": "amplifyDatasource_API_KEY"
+                        "ApiKey": "da2-n55i3a3o5rfb7ggyy55zlms4ri",
+                        "ClientDatabasePrefix": "newtaskmaster_API_KEY"
                     }
                 },
                 "CredentialsProvider": {
                     "CognitoIdentity": {
                         "Default": {
-                            "PoolId": "us-west-2:c542c62b-2690-409e-ab54-62871e75b0c9",
+                            "PoolId": "us-west-2:c9588278-fe6e-4f0e-835e-a76d98e620ed",
                             "Region": "us-west-2"
                         }
                     }
                 },
                 "CognitoUserPool": {
                     "Default": {
-                        "PoolId": "us-west-2_gTNhJ61Bl",
-                        "AppClientId": "39lo92blpchqsh9sn0hg3plpfc",
+                        "PoolId": "us-west-2_XCaoiWUnr",
+                        "AppClientId": "hrqmdr2q2246s2i5kdduai674",
                         "Region": "us-west-2"
                     }
                 },
@@ -69,7 +69,7 @@
                 },
                 "S3TransferUtility": {
                     "Default": {
-                        "Bucket": "taskmaster9e34cdc16e8549fa8687dd487f8b7bea12431-dev",
+                        "Bucket": "newtaskmaster2f6c74481eb34d7caab67a8678c39126151845-today",
                         "Region": "us-west-2"
                     }
                 }
@@ -79,7 +79,7 @@
     "storage": {
         "plugins": {
             "awsS3StoragePlugin": {
-                "bucket": "taskmaster9e34cdc16e8549fa8687dd487f8b7bea12431-dev",
+                "bucket": "newtaskmaster2f6c74481eb34d7caab67a8678c39126151845-today",
                 "region": "us-west-2",
                 "defaultAccessLevel": "guest"
             }

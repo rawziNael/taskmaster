@@ -1,8 +1,5 @@
 package com.example.taskmaster;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +20,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
@@ -145,11 +146,13 @@ public class AddTask extends AppCompatActivity {
         String taskBody = ((EditText) findViewById(R.id.newTaskBody)).getText().toString();
         String taskStatus = spinner_task_status;
 
+
+
         Task item = Task.builder()
                 .title(taskTitle)
                 .body(taskBody)
-                .team(teamData)
                 .status(taskStatus)
+                .teamTasksId(teamData.getId())
                 .image(imageUrl)
                 .build();
         MainActivity.saveTaskToAPI(item);

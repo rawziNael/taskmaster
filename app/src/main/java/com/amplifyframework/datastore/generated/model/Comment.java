@@ -1,44 +1,41 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.HasMany;
-import com.amplifyframework.core.model.temporal.Temporal;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.Objects;
+import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 import androidx.core.util.ObjectsCompat;
 
 import com.amplifyframework.core.model.Model;
-import com.amplifyframework.core.model.annotations.Index;
+import com.amplifyframework.core.model.annotations.BelongsTo;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
 import com.amplifyframework.core.model.query.predicate.QueryField;
+import com.amplifyframework.core.model.temporal.Temporal;
 
-import static com.amplifyframework.core.model.query.predicate.QueryField.field;
+import java.util.Objects;
+import java.util.UUID;
 
-/** This is an auto generated class representing the Team type in your schema. */
+/** This is an auto generated class representing the Comment type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Teams")
-@Index(name = "undefined", fields = {"id"})
-public final class Team implements Model {
-  public static final QueryField ID = field("Team", "id");
-  public static final QueryField NAME = field("Team", "name");
+@ModelConfig(pluralName = "Comments")
+public final class Comment implements Model {
+  public static final QueryField ID = field("Comment", "id");
+  public static final QueryField POST = field("Comment", "postCommentsId");
+  public static final QueryField CONTENT = field("Comment", "content");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String", isRequired = true) String name;
-  private final @ModelField(targetType="Task") @HasMany(associatedWith = "teamTasksId", type = Task.class) List<Task> tasks = null;
+  private final @ModelField(targetType="Post") @BelongsTo(targetName = "postCommentsId", type = Post.class) Post post;
+  private final @ModelField(targetType="String", isRequired = true) String content;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
   }
   
-  public String getName() {
-      return name;
+  public Post getPost() {
+      return post;
   }
   
-  public List<Task> getTasks() {
-      return tasks;
+  public String getContent() {
+      return content;
   }
   
   public Temporal.DateTime getCreatedAt() {
@@ -49,9 +46,10 @@ public final class Team implements Model {
       return updatedAt;
   }
   
-  private Team(String id, String name) {
+  private Comment(String id, Post post, String content) {
     this.id = id;
-    this.name = name;
+    this.post = post;
+    this.content = content;
   }
   
   @Override
@@ -61,11 +59,12 @@ public final class Team implements Model {
       } else if(obj == null || getClass() != obj.getClass()) {
         return false;
       } else {
-      Team team = (Team) obj;
-      return ObjectsCompat.equals(getId(), team.getId()) &&
-              ObjectsCompat.equals(getName(), team.getName()) &&
-              ObjectsCompat.equals(getCreatedAt(), team.getCreatedAt()) &&
-              ObjectsCompat.equals(getUpdatedAt(), team.getUpdatedAt());
+      Comment comment = (Comment) obj;
+      return ObjectsCompat.equals(getId(), comment.getId()) &&
+              ObjectsCompat.equals(getPost(), comment.getPost()) &&
+              ObjectsCompat.equals(getContent(), comment.getContent()) &&
+              ObjectsCompat.equals(getCreatedAt(), comment.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), comment.getUpdatedAt());
       }
   }
   
@@ -73,7 +72,8 @@ public final class Team implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getName())
+      .append(getPost())
+      .append(getContent())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -83,16 +83,17 @@ public final class Team implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("Team {")
+      .append("Comment {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("name=" + String.valueOf(getName()) + ", ")
+      .append("post=" + String.valueOf(getPost()) + ", ")
+      .append("content=" + String.valueOf(getContent()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
   }
   
-  public static NameStep builder() {
+  public static ContentStep builder() {
       return new Builder();
   }
   
@@ -104,44 +105,55 @@ public final class Team implements Model {
    * @param id the id of the existing item this instance will represent
    * @return an instance of this model with only ID populated
    */
-  public static Team justId(String id) {
-    return new Team(
+  public static Comment justId(String id) {
+    return new Comment(
       id,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      name);
+      post,
+      content);
   }
-  public interface NameStep {
-    BuildStep name(String name);
+  public interface ContentStep {
+    BuildStep content(String content);
   }
   
 
   public interface BuildStep {
-    Team build();
+    Comment build();
     BuildStep id(String id);
+    BuildStep post(Post post);
   }
   
 
-  public static class Builder implements NameStep, BuildStep {
+  public static class Builder implements ContentStep, BuildStep {
     private String id;
-    private String name;
+    private String content;
+    private Post post;
     @Override
-     public Team build() {
+     public Comment build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
-        return new Team(
+        return new Comment(
           id,
-          name);
+          post,
+          content);
     }
     
     @Override
-     public BuildStep name(String name) {
-        Objects.requireNonNull(name);
-        this.name = name;
+     public BuildStep content(String content) {
+        Objects.requireNonNull(content);
+        this.content = content;
+        return this;
+    }
+    
+    @Override
+     public BuildStep post(Post post) {
+        this.post = post;
         return this;
     }
     
@@ -157,14 +169,20 @@ public final class Team implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name) {
+    private CopyOfBuilder(String id, Post post, String content) {
       super.id(id);
-      super.name(name);
+      super.content(content)
+        .post(post);
     }
     
     @Override
-     public CopyOfBuilder name(String name) {
-      return (CopyOfBuilder) super.name(name);
+     public CopyOfBuilder content(String content) {
+      return (CopyOfBuilder) super.content(content);
+    }
+    
+    @Override
+     public CopyOfBuilder post(Post post) {
+      return (CopyOfBuilder) super.post(post);
     }
   }
   
