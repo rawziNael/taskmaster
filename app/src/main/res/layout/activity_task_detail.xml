@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".TaskDetailActivity">
 
-
     <TextView
         android:id="@+id/taskDetailTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="56dp"
         android:textSize="24sp"
         android:textAlignment="center"
@@ -25,7 +24,7 @@
         android:id="@+id/taskBodyTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:textSize="24sp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="56dp"
         android:textAlignment="center"
         android:textSize="24sp"
@@ -46,16 +45,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskBodyTitle"/>
 
+    <TextView
+        android:id="@+id/task_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="56dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_Detail_State"/>
+
     <ImageView
         android:id="@+id/task_img"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/task_Detail_State"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/task_location"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
