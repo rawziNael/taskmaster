@@ -54,5 +54,16 @@
             "Bucket": "newtaskmaster2f6c74481eb34d7caab67a8678c39126151845-today",
             "Region": "us-west-2"
         }
+    },
+    "PinpointAnalytics": {
+        "Default": {
+            "AppId": "620a3b649a084d9186f66313f49eac47",
+            "Region": "us-west-2"
+        }
+    },
+    "PinpointTargeting": {
+        "Default": {
+            "Region": "us-west-2"
+        }
     }
 }

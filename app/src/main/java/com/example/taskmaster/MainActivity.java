@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
@@ -119,7 +120,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClicked(int position) {
                 Intent goToDetailsIntent = new Intent(getApplicationContext(), TaskDetailActivity.class);
-                goToDetailsIntent.putExtra(TASK_ID ,  dataList.get(position).getId().toString());
+                goToDetailsIntent.putExtra(TASK_ID ,  dataList.get(position).getId());
+                AnalyticsEvent event = AnalyticsEvent.builder()
+                        .name("Task Detail")
+                        .addProperty("Id",dataList.get(position).getId())
+                        .addProperty("Title", dataList.get(position).getTitle())
+                        .addProperty("Body", dataList.get(position).getBody())
+                        .build();
+
+                Amplify.Analytics.recordEvent(event);
                 startActivity(goToDetailsIntent);
             }
         });

@@ -70,3 +70,18 @@ the location of a Task should be displayed if it exists.
 
 ![alt text](ScreenShots/permissions.png)  
 ![alt text](ScreenShots/locations.png)
+
+# Lab: 41 - Intent Filters
+
+The application will start collecting basic, aggregated analytics on user usage, translate text from english to arabic and will also
+read task descriptions to users out loud.
+
+On the “Main” activity, start recording at least one AnalyticsEvent.
+On the Task Detail activity, I added a button to read out the task’s description using the Amplify Predictions library.
+
+
+
+
+![alt text](ScreenShots/analytic.png)
+![alt text](ScreenShots/read_btn.png)
+![alt text](ScreenShots/translate.png)
