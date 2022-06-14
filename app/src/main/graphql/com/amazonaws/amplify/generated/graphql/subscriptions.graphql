@@ -10,6 +10,9 @@ subscription OnCreateTask {
     locationLongitude
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
     teamTasksId
   }
 }
@@ -24,6 +27,9 @@ subscription OnUpdateTask {
     locationLongitude
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
     teamTasksId
   }
 }
@@ -38,6 +44,9 @@ subscription OnDeleteTask {
     locationLongitude
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
     teamTasksId
   }
 }
@@ -56,12 +65,19 @@ subscription OnCreateTeam {
         locationLongitude
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         teamTasksId
       }
       nextToken
+      startedAt
     }
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }
 subscription OnUpdateTeam {
@@ -79,12 +95,19 @@ subscription OnUpdateTeam {
         locationLongitude
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         teamTasksId
       }
       nextToken
+      startedAt
     }
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }
 subscription OnDeleteTeam {
@@ -102,11 +125,18 @@ subscription OnDeleteTeam {
         locationLongitude
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         teamTasksId
       }
       nextToken
+      startedAt
     }
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }

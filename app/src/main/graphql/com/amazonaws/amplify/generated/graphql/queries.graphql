@@ -10,6 +10,9 @@ query GetTask($id: ID!) {
     locationLongitude
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
     teamTasksId
   }
 }
@@ -29,9 +32,44 @@ query ListTasks(
       locationLongitude
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       teamTasksId
     }
     nextToken
+    startedAt
+  }
+}
+query SyncTasks(
+  $filter: ModelTaskFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncTasks(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      title
+      body
+      status
+      image
+      locationLatitude
+      locationLongitude
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      teamTasksId
+    }
+    nextToken
+    startedAt
   }
 }
 query GetTeam($id: ID!) {
@@ -49,12 +87,19 @@ query GetTeam($id: ID!) {
         locationLongitude
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         teamTasksId
       }
       nextToken
+      startedAt
     }
     createdAt
     updatedAt
+    _version
+    _deleted
+    _lastChangedAt
   }
 }
 query ListTeams(
@@ -76,10 +121,44 @@ query ListTeams(
       name
       tasks {
         nextToken
+        startedAt
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
     nextToken
+    startedAt
+  }
+}
+query SyncTeams(
+  $filter: ModelTeamFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncTeams(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      tasks {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+    nextToken
+    startedAt
   }
 }

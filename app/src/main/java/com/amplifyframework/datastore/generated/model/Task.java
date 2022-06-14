@@ -1,6 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,8 +34,6 @@ public final class Task implements Model {
   private final @ModelField(targetType="String") String image;
   private final @ModelField(targetType="Float") Double locationLatitude;
   private final @ModelField(targetType="Float") Double locationLongitude;
-  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
-  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   private final @ModelField(targetType="ID") String teamTasksId;
   public String getId() {
       return id;
@@ -64,14 +61,6 @@ public final class Task implements Model {
   
   public Double getLocationLongitude() {
       return locationLongitude;
-  }
-  
-  public Temporal.DateTime getCreatedAt() {
-      return createdAt;
-  }
-  
-  public Temporal.DateTime getUpdatedAt() {
-      return updatedAt;
   }
   
   public String getTeamTasksId() {
@@ -104,8 +93,6 @@ public final class Task implements Model {
               ObjectsCompat.equals(getImage(), task.getImage()) &&
               ObjectsCompat.equals(getLocationLatitude(), task.getLocationLatitude()) &&
               ObjectsCompat.equals(getLocationLongitude(), task.getLocationLongitude()) &&
-              ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
-              ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt()) &&
               ObjectsCompat.equals(getTeamTasksId(), task.getTeamTasksId());
       }
   }
@@ -120,8 +107,6 @@ public final class Task implements Model {
       .append(getImage())
       .append(getLocationLatitude())
       .append(getLocationLongitude())
-      .append(getCreatedAt())
-      .append(getUpdatedAt())
       .append(getTeamTasksId())
       .toString()
       .hashCode();
@@ -138,8 +123,6 @@ public final class Task implements Model {
       .append("image=" + String.valueOf(getImage()) + ", ")
       .append("locationLatitude=" + String.valueOf(getLocationLatitude()) + ", ")
       .append("locationLongitude=" + String.valueOf(getLocationLongitude()) + ", ")
-      .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
-      .append("updatedAt=" + String.valueOf(getUpdatedAt()) + ", ")
       .append("teamTasksId=" + String.valueOf(getTeamTasksId()))
       .append("}")
       .toString();
