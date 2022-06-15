@@ -93,7 +93,7 @@ On the “Main” activity, I added a banner ad to the bottom of the page and di
 the first one allows users to see an interstitial ad and the second allows users to see a rewarded ad.
 
 ![alt text](ScreenShots/Ads.png)  
-![alt text](ScreenShots/Interstitial_ads.png)
+![alt text](ScreenShots/Interstitial_ads.png)  
 ![alt text](ScreenShots/RewardedAds.png)
 
 
