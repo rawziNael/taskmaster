@@ -32,4 +32,6 @@
     <string name="verification">Verification</string>
     <string name="verification_code">Submit</string>
     <string name="verification_text">Verification code</string>
+    <string name="rewarded">REWARDED</string>
+    <string name="interstitial">Interstit</string>
 </resources>

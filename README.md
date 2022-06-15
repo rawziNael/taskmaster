@@ -85,3 +85,15 @@ On the Task Detail activity, I added a button to read out the task’s descripti
 ![alt text](ScreenShots/analytic.png)
 ![alt text](ScreenShots/read_btn.png)
 ![alt text](ScreenShots/translate.png)
+
+
+# Lab: 42 - Monetization And AdMob Ads
+
+On the “Main” activity, I added a banner ad to the bottom of the page and display a Google test ad there, in addition , I added two buttons
+the first one allows users to see an interstitial ad and the second allows users to see a rewarded ad.
+
+![alt text](ScreenShots/Ads.png)
+![alt text](ScreenShots/Interstitial_ads.png)
+![alt text](ScreenShots/RewardedAds.png)
+
+
