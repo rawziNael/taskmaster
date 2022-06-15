@@ -1,6 +1,7 @@
 package com.example.taskmaster;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,17 +21,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amplifyframework.AmplifyException;
 import com.amplifyframework.analytics.AnalyticsEvent;
-import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
-import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
-import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.example.taskmaster.Adapter.RecyclerViewAdapter;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private String teamNameData = null;
     private String currentUsername = null;
     private String userId ;
+    private InterstitialAd mInterstitialAd;
+    private RewardedAd mRewardedAd;
+    //ca-app-pub-7951919024402182/8901294398
 
     List<Task> dataList = new ArrayList<>();
 
@@ -64,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button allTasks = findViewById(R.id.allTasksButton);
         allTasks.setOnClickListener(this.allTasks);
+
 
         handler = new Handler(Looper.getMainLooper(),
                 new Handler.Callback() {
@@ -82,23 +98,54 @@ public class MainActivity extends AppCompatActivity {
             startActivity(goToLogin);
         }
 
-//        Team team1 = Team.builder()
-//                .name("Team 1")
-//                .build();
-//        saveTeamToAPI(team1);
-//
-//        Team team2 = Team.builder()
-//                .name("Team 2")
-//                .build();
-//        saveTeamToAPI(team2);
-//
-//        Team team3 = Team.builder()
-//                .name("Team 3")
-//                .build();
-//        saveTeamToAPI(team3);
+        // Banner Ads
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                Log.i(TAG , "The ads is appear");
+            }
+        });
+
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        // Interstitial Ads
+        Button InterstitialBtn = findViewById(R.id.Interstitial_ads_btn);
+        InterstitialBtn.setOnClickListener(view -> {
+        setInterstitialAd();
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(MainActivity.this);
+        } else {
+            Log.d("TAG", "The interstitial ad wasn't ready yet.");
+        }
+        });
+
+        // Reward Ads
+
+        Button RewardedBtn = findViewById(R.id.rewarded_btn);
+
+        RewardedBtn.setOnClickListener(view -> {
+            setRewardedAd();
+            if (mRewardedAd != null) {
+                Activity activityContext = MainActivity.this;
+                mRewardedAd.show(activityContext, new OnUserEarnedRewardListener() {
+                    @Override
+                    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                        // Handle the reward.
+                        Log.d(TAG, "The user earned the reward.");
+                        int rewardAmount = rewardItem.getAmount();
+                        String rewardType = rewardItem.getType();
+                    }
+                });
+            } else {
+                Log.d(TAG, "The rewarded ad wasn't ready yet.");
+            }
+        });
 
     }
+
 
     @Override
     protected void onResume() {
@@ -276,5 +323,99 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void listItemDeleted() {
         adapter.notifyDataSetChanged();
+    }
+
+    //********************************************* InterstitialAd**********************************
+
+    public void setInterstitialAd(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i(TAG, "onAdLoaded");
+
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i(TAG, loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+
+
+    }
+
+    //***********************************RewardedAd*************************************************
+
+    private void setRewardedAd(){
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
+                adRequest, new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+                        Log.d(TAG, loadAdError.getMessage());
+                        mRewardedAd = null;
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        mRewardedAd = rewardedAd;
+                        Log.d(TAG, "Ad was loaded.");
+
+                        mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                Log.d(TAG, "Ad was shown.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when ad fails to show.
+                                Log.d(TAG, "Ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                // Set the ad reference to null so you don't show the ad a second time.
+                                Log.d(TAG, "Ad was dismissed.");
+                                mRewardedAd = null;
+                            }
+                        });
+                    }
+                });
     }
 }
